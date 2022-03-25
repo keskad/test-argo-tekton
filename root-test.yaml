@@ -1,14 +1,12 @@
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-    name: apps
-    namespace: argocd
+    name: root
+    namespace: argo-cd
 spec:
     destination:
-        name: 'root-test'
-        namespace: 'argocd'
-#        server: ''
+        namespace: argo-cd
+        server: 'https://kubernetes.default.svc'
     source:
         path: apps/
         repoURL: 'https://github.com/keskad/test-argo-tekton'
@@ -19,5 +17,4 @@ spec:
             prune: false
             selfHeal: false
         syncOptions:
-            - CreateNamespace=true
             - ApplyOutOfSyncOnly=true
