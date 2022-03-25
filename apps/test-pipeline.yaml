@@ -3,12 +3,11 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
     name: test-pipeline
-    namespace: argocd
+    namespace: argo-cd
 spec:
     destination:
         name: 'test-pipeline'
         namespace: 'damiank-tekton-cicd'
-#        server: ''
     source:
         path: src/test-pipeline
         repoURL: 'https://github.com/keskad/test-argo-tekton'
