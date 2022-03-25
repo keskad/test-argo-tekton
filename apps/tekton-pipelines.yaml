@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+    name: tekton-pipelines
+    namespace: argo-cd
+spec:
+    destination:
+        namespace: tekton-pipelines
+        server: 'https://kubernetes.default.svc'
+    source:
+        path: ''
+        repoURL: 'https://cdfoundation.github.io/tekton-helm-chart/'
+        targetRevision: 0.29.0
+        chart: tekton-pipeline
+    project: default
+    syncPolicy:
+        automated:
+            prune: false
+            selfHeal: false
+        syncOptions:
+            - CreateNamespace=true
