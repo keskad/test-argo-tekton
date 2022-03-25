@@ -51,6 +51,7 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
           serviceName: el-release-listener
           servicePort: 80
