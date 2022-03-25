@@ -1,0 +1,73 @@
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+    name: release-triggertemplate
+    namespace: damiank-tekton-cicd
+spec:
+    params:
+        - name: gitrevision
+          description: The git revision
+          default: master
+        - name: gitrepositoryurl
+          description: The git repository url
+        - name: namespace
+          description: The namespace to create the resources
+
+    resourcetemplates:
+        - apiVersion: tekton.dev/v1beta1
+          kind: PipelineRun
+          metadata:
+              generateName: release-pipeline-run-
+              namespace: $(tt.params.namespace)
+          spec:
+              serviceAccountName: pipeline-executor-sa
+              pipelineSpec:
+                  tasks:
+                      - name: from-build-pack
+                        taskSpec:
+                            steps:
+                                - image: alpine:3.13
+                                  name: hello-world
+                                  script: |
+                                      echo "Hello world"
+                                      ps aux
+
+#              resources:
+#                  - name: source-repo
+#                    resourceSpec:
+#                        type: git
+#                        params:
+#                            - name: revision
+#                              value: $(tt.params.gitrevision)
+#                            - name: url
+#                              value: $(tt.params.gitrepositoryurl)
+#                  - name: image-source
+#                    resourceSpec:
+#                        type: image
+#                        params:
+#                            - name: url
+#                              value: DOCKERREPO-REPLACEME # docker-repo-location.com/repo:getting-started
+#                  - name: event-to-sink
+#                    resourceSpec:
+#                        type: cloudEvent
+#                        params:
+#                            - name: targetURI
+#                              value: http://event-display.getting-started.svc.cluster.local
+
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+    name: release-pipelinebinding
+    namespace: damiank-tekton-cicd
+spec:
+    params:
+        - name: gitrevision
+          value: $(body.checkout_sha)
+        - name: namespace
+          value: damiank-tekton-cicd
+        - name: gitrepositoryurl
+          value: "https://github.com/$(body.project.git_ssh_url)"
+        - name: eventtype
+          value: release

@@ -1,0 +1,55 @@
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+    name: merge-request-triggertemplate
+    namespace: damiank-tekton-cicd
+spec:
+    params:
+        - name: gitrevision
+          description: The git revision
+          default: master
+        - name: gitrepositoryurl
+          description: The git repository url
+        - name: namespace
+          description: The namespace to create the resources
+
+    resourcetemplates:
+        - apiVersion: tekton.dev/v1beta1
+          kind: PipelineRun
+          metadata:
+              generateName: mr-pipeline-run-
+              namespace: $(tt.params.namespace)
+          spec:
+              serviceAccountName: pipeline-executor-sa
+              pipelineSpec:
+                  tasks:
+                      - name: from-build-pack
+                        taskSpec:
+                            steps:
+                                - image: alpine:3.13
+                                  name: hello-world
+                                  script: |
+                                      echo "Hello world"
+                                      ps aux
+
+                  # sposób jak zaimplementować powiadomienie o zakończeniu pipeline - np. aktualizacja statusu Merge Requesta w Gitlabie lub powiadomienie na Teams
+                  # https://tekton.dev/vault/pipelines-v0.16.3/pipelines/#specifying-workspaces-in-final-tasks
+
+
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+    name: merge-request-pipelinebinding
+    namespace: damiank-tekton-cicd
+spec:
+    params:
+        - name: gitrevision
+          value: $(body.object_attributes.last_commit.id)
+        - name: namespace
+          value: damiank-tekton-cicd
+        - name: gitrepositoryurl
+          value: "https://github.com/$(body.project.git_ssh_url)"
+        - name: eventtype
+          value: merge-request

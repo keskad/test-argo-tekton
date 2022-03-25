@@ -1,0 +1,23 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+    name: apps
+    namespace: argocd
+spec:
+    destination:
+        name: 'root-test'
+        namespace: 'argocd'
+#        server: ''
+    source:
+        path: apps/
+        repoURL: 'https://github.com/keskad/test-argo-tekton'
+        targetRevision: HEAD
+    project: default
+    syncPolicy:
+        automated:
+            prune: false
+            selfHeal: false
+        syncOptions:
+            - CreateNamespace=true
+            - ApplyOutOfSyncOnly=true
