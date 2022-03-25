@@ -6,8 +6,8 @@ metadata:
     namespace: argo-cd
 spec:
     destination:
-        name: 'test-pipeline'
         namespace: 'damiank-tekton-cicd'
+        server: 'https://kubernetes.default.svc'
     source:
         path: src/test-pipeline
         repoURL: 'https://github.com/keskad/test-argo-tekton'
