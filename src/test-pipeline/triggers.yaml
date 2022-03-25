@@ -7,37 +7,37 @@ metadata:
 spec:
     serviceAccountName: pipeline-spawner-sa
     triggers:
-        - name: release
-          interceptors:
-              - cel:
-                    filter: "body.ref == 'refs/heads/main'"
-              - gitlab:
-                    secretRef:
-                        secretName: pipeline-webhook-secrets
-                        secretKey: webhook-secret
-                    eventTypes:
-                        - Push Hook
-#                        - Tag Hook
-          bindings:
-              - ref: release-pipelinebinding
-          template:
-              ref: release-triggertemplate
+        -   name: release
+            interceptors:
+                -   cel:
+                        filter: "body.ref == 'refs/heads/main'"
+                -   gitlab:
+                        secretRef:
+                            secretName: pipeline-webhook-secrets
+                            secretKey: webhook-secret
+                        eventTypes:
+                            - Push Hook
+            #                        - Tag Hook
+            bindings:
+                -   ref: release-pipelinebinding
+            template:
+                ref: release-triggertemplate
 
-        - name: merge_request
-          interceptors:
-              - gitlab:
-                    secretRef:
-                        secretName: pipeline-webhook-secrets
-                        secretKey: webhook-secret
-                    eventTypes:
-                        - Push Hook
-                        - Merge Request Hook
-              - cel:
-                    filter: "body.object_attributes.target_branch == 'main'"
-          bindings:
-              - ref: merge-request-pipelinebinding
-          template:
-              ref: merge-request-triggertemplate
+        -   name: merge_request
+            interceptors:
+                -   gitlab:
+                        secretRef:
+                            secretName: pipeline-webhook-secrets
+                            secretKey: webhook-secret
+                        eventTypes:
+                            - Push Hook
+                            - Merge Request Hook
+                -   cel:
+                        filter: "body.object_attributes.target_branch == 'main'"
+            bindings:
+                -   ref: merge-request-pipelinebinding
+            template:
+                ref: merge-request-triggertemplate
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -46,16 +46,17 @@ metadata:
     name: el-release-listener
     namespace: damiank-tekton-cicd
 spec:
-  rules:
-  - host: webhooks.k3s-aws.keskad.pl
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          name: el-release-listener
-          port:
-            number: 80
+    rules:
+        -   host: webhooks.k3s-aws.keskad.pl
+            http:
+                paths:
+                    -   path: /
+                        pathType: Prefix
+                        backend:
+                            service:
+                                name: el-release-listener
+                                port:
+                                    number: 80
 
 ---
 apiVersion: v1
