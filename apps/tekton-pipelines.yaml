@@ -12,6 +12,8 @@ spec:
         repoURL: 'https://cdfoundation.github.io/tekton-helm-chart/'
         targetRevision: 0.29.0
         chart: tekton-pipeline
+        directory:
+            recurse: true
     project: default
     syncPolicy:
         automated:
