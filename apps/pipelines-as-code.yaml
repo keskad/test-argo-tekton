@@ -6,7 +6,7 @@ metadata:
     namespace: argo-cd
 spec:
     destination:
-        namespace: 'tekton-pipelines'
+        namespace: 'pipelines-as-code'
         server: 'https://kubernetes.default.svc'
     source:
         path: src/pipelines-as-code
