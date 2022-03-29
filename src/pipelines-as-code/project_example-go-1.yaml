@@ -1,0 +1,13 @@
+---
+apiVersion: "pipelinesascode.tekton.dev/v1alpha1"
+kind: Repository
+metadata:
+    name: example-go-1
+spec:
+    url: "https://gitlab.k3s-aws.keskad.pl/root/example-go-1"
+    git_provider:
+        url: https://gitlab.k3s-aws.keskad.pl
+        user: root
+        secret:
+            name: pac-git-basic-auth-root-example-go-1
+            key: token
