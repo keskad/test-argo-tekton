@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+    name: tekton-dashboard
+    namespace: argo-cd
+spec:
+    destination:
+        namespace: 'tekton-pipelines'
+        server: 'https://kubernetes.default.svc'
+    source:
+        path: src/tekton-dashboard
+        repoURL: 'https://github.com/keskad/test-argo-tekton'
+        targetRevision: HEAD
+    project: default
+    syncPolicy:
+        automated:
+            prune: false
+            selfHeal: false
+        syncOptions:
+            - CreateNamespace=true
+            - ApplyOutOfSyncOnly=true
