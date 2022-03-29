@@ -2,15 +2,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: tekton-dashboard
+    name: tekton-dashboard
 spec:
-  rules:
-  - http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: tekton-dashboard
-            port:
-              number: 9097
+    rules:
+        - host: tekton-dashboard.k3s-aws.keskad.pl
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: tekton-dashboard
+                            port:
+                                number: 9097
+    tls:
+        - hosts:
+              - tekton-dashboard.k3s-aws.keskad.pl
