@@ -1630,7 +1630,7 @@ data:
   # Common configuration for all knative codebase
   zap-logger-config: |
     {
-      "level": "info",
+      "level": "debug",
       "development": false,
       "sampling": {
         "initial": 100,
@@ -1654,8 +1654,8 @@ data:
       }
     }
   # Log level overrides
-  loglevel.controller: "info"
-  loglevel.webhook: "info"
+  loglevel.controller: "debug"
+  loglevel.webhook: "debug"
 
 ---
 # Copyright 2019 The Tekton Authors
