@@ -3,6 +3,8 @@ apiVersion: "pipelinesascode.tekton.dev/v1alpha1"
 kind: Repository
 metadata:
     name: example-go-1
+    annotations:
+        pipelinesascode.tekton.dev/target-namespace: "default"
 spec:
     url: "https://gitlab.k3s-aws.keskad.pl/root/example-go-1"
     git_provider:
