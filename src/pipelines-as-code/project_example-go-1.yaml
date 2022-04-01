@@ -8,7 +8,6 @@ metadata:
 spec:
     url: "https://github.com/keskad/pipelines-as-code-test-example-go-1"
     git_provider:
-        url: https://github.com
         user: keskad
         secret:
             name: pac-git-basic-auth-root-example-go-1
