@@ -4,8 +4,6 @@ kind: Repository
 metadata:
     name: example-go-1
     namespace: go-cicd
-    annotations:
-        pipelinesascode.tekton.dev/target-namespace: "default"
 spec:
     url: "https://github.com/keskad/pipelines-as-code-test-example-go-1"
     git_provider:
