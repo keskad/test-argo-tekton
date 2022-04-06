@@ -11,3 +11,20 @@ spec:
         secret:
             name: pac-git-basic-auth-root-example-go-1
             key: token
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    finalizers:
+        - kubernetes.io/pvc-protection
+    name: maven-cache
+    namespace: go-cicd
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 10Gi
+    volumeMode: Filesystem
+    volumeName: maven-cache
