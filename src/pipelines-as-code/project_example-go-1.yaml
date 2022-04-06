@@ -26,5 +26,5 @@ spec:
     resources:
         requests:
             storage: 10Gi
-    volumeMode: Filesystem
+    storageClassName: local-path
     volumeName: maven-cache
